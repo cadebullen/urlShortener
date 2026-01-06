@@ -12,7 +12,7 @@ A high-performance URL shortener service built with Spring Boot, using Redis for
 > Tech Stack
 
 - Java 
-- Spring Boot 2.7
+- Spring Boot 
 - Redis(Cache)
 - MySQL(Database)
 - Docker & Docker Compose
