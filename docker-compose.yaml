@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  # Spring Boot Application
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/${MYSQL_DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_REDIS_HOST: redis_cache
+      SPRING_REDIS_PORT: 6379
+    depends_on:
+      - mysql_db
+      - redis_cache
+
+  # MySQL Service
+  mysql_db:
+    image: mysql:8.0
+    container_name: scale_short_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Redis Service (Cache)
+  redis_cache:
+    image: redis:alpine
+    container_name: scale_short_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
